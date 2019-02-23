@@ -1,6 +1,6 @@
 import unittest
 
-from named_entity_recognition import Stanford
+from named_entity_recognition.stanford import Stanford
 
 
 class TestStanford(unittest.TestCase):

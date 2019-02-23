@@ -22,11 +22,27 @@ TEMPLATE_END = """
 
 
 class NamedEntityRecognition(ABC):
+    """
+    The abstract base class for different available parsers supporting Named-Entity Recognition.
+    """
+
     @abstractmethod
     def extract(self, articles: Sequence[Article]) -> Mapping[str, Sequence[Article]]:
+        """
+        Extract the names of persons from a given sequence of articles.
+        :param articles: The input articles.
+        :return: A structure mapping entities to the articles containing them.
+        """
+
         raise NotImplementedError()
 
-    def export(self, path: str, articles: Sequence[Article]):
+    def export(self, path: str, articles: Sequence[Article]) -> None:
+        """
+        Extract the names of persons from articles and save them as a HTML file.
+        :param path: The path to the HTML file.
+        :param articles: The input articles.
+        """
+
         entities = self.extract(articles)
         with open(path, "w", encoding="utf8") as file:
             file.write(TEMPLATE_HEAD)
@@ -35,6 +51,12 @@ class NamedEntityRecognition(ABC):
 
     @staticmethod
     def __list_generator(entities: Mapping[str, Sequence[Article]]) -> Iterator[str]:
+        """
+        A generator for creating a HTML mapping line by line.
+        :param entities: The extracted names.
+        :return: A generator yielding lines.
+        """
+
         yield "<dl>"
         for entity, articles in entities.items():
             yield "<dt>{}</dt><dd><ul>".format(entity)
