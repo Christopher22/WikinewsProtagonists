@@ -24,6 +24,9 @@ class Article:
     def __repr__(self):
         return self.title
 
+    def get_url(self):
+        return "https://en.wikinews.org/?curid={}".format(self.id)
+
     @staticmethod
     def filter_articles(articles: Sequence["Article"]) -> Sequence["Article"]:
         return [
