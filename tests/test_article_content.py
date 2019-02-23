@@ -15,3 +15,7 @@ class TestArticleContent(unittest.TestCase):
         test_object.optimize()
 
         self.assertEqual(PLACEHOLDER, str(test_object))
+
+
+if __name__ == "__main__":
+    unittest.main()
