@@ -3,6 +3,7 @@ import logging
 import pickle
 from typing import Sequence
 
+import named_entity_recognition
 from data import Article
 
 
@@ -18,9 +19,16 @@ def get_articles() -> Sequence[Article]:
         with open(CACHE_NAME, "rb") as input:
             articles = pickle.load(input)
 
+    # Optimize the text on runtime. Therefore, these routine may be modified without need to reload the cache.
+    for article in articles:
+        article.content.optimize()
+
     return articles
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     articles = get_articles()
+
+    extractor = named_entity_recognition.Spacy()
+    entities = extractor.export("entities.html", articles)

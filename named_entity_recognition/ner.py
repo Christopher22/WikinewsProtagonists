@@ -28,7 +28,7 @@ class NamedEntityRecognition(ABC):
 
     def export(self, path: str, articles: Sequence[Article]):
         entities = self.extract(articles)
-        with open(path, "w") as file:
+        with open(path, "w", encoding="utf8") as file:
             file.write(TEMPLATE_HEAD)
             file.writelines(NamedEntityRecognition.__list_generator(entities))
             file.writelines(TEMPLATE_END)
