@@ -1,11 +1,8 @@
 import requests
 import re
 
-from . import Article
-
-
 class ArticleContent:
-    def __init__(self, content: str, optimize: bool = True):
+    def __init__(self, content: str, optimize: bool):
         self.content = content
         if optimize:
             self.optimize()
@@ -36,7 +33,7 @@ class ArticleContent:
         self.content = self.content.strip()
 
     @staticmethod
-    def from_article(article: Article) -> "ArticleContent":
+    def from_id(article_id: int) -> "ArticleContent":
         response = requests.get(
             "https://en.wikinews.org/w/api.php",
             params={
@@ -46,8 +43,8 @@ class ArticleContent:
                 "explaintext": True,
                 "exsectionformat": "plain",
                 "exlimit": 1,
-                "pageids": article.id,
+                "pageids": article_id,
             },
         ).json()
 
-        return ArticleContent(response["query"]["pages"][str(article.id)]["extract"])
+        return ArticleContent(response["query"]["pages"][str(article_id)]["extract"], optimize=False)

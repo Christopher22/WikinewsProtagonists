@@ -1,2 +1,2 @@
-from .articles import Article
 from .article_content import ArticleContent
+from .articles import Article

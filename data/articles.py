@@ -1,12 +1,22 @@
+import multiprocessing
+from typing import Sequence, Optional
+import logging
+
 import requests
 
-from typing import Sequence, Tuple
+from data import ArticleContent
+
+
+def _enrich_article(article: "Article") -> "Article":
+    article.content = ArticleContent.from_id(article.id)
+    return article
 
 
 class Article:
-    def __init__(self, id: int, title: str):
+    def __init__(self, id: int, title: str, content: Optional[ArticleContent] = None):
         self.id = id
         self.title = title
+        self.content = content
 
     def __str__(self):
         return self.title
@@ -26,7 +36,7 @@ class Article:
         ]
 
     @staticmethod
-    def load_all() -> Sequence["Article"]:
+    def from_wikinews(num_worker: int = 8) -> Sequence["Article"]:
         params = {
             "action": "query",
             "format": "json",
@@ -35,6 +45,9 @@ class Article:
             "aplimit": "max",
         }
 
+        logging.info("Downloading article meta...")
+
+        # Create all the article stumbs
         articles = []
         while True:
             # Get the response and parse it as JSON
@@ -55,5 +68,15 @@ class Article:
             else:
                 # ... or end the loading otherwise.
                 break
+
+        # Exclude articles not of further interest
+        logging.info("%s articles downloaded. Filtering...", len(articles))
+        articles = Article.filter_articles(articles)
+        logging.info("%s articles remain after filtering.", len(articles))
+
+        # Download the actual texts
+        logging.info("Downloading all the texts...")
+        with multiprocessing.Pool(num_worker) as pool:
+            articles = pool.map(_enrich_article, articles)
 
         return articles
