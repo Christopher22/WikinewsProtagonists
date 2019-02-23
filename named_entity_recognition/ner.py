@@ -9,10 +9,10 @@ TEMPLATE_HEAD = """
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Extracted entities</title>
+    <title>Extracted persons</title>
 </head>
 <body>
-    <h1>Named entities in WikiNews</h1>
+    <h1>Persons in WikiNews</h1>
 """
 
 TEMPLATE_END = """
@@ -26,9 +26,9 @@ class NamedEntityRecognition(ABC):
     def extract(self, articles: Sequence[Article]) -> Mapping[str, Sequence[Article]]:
         raise NotImplementedError()
 
-    def export(self, path: Path, articles: Sequence[Article]):
+    def export(self, path: str, articles: Sequence[Article]):
         entities = self.extract(articles)
-        with open(str(path), "w") as file:
+        with open(path, "w") as file:
             file.write(TEMPLATE_HEAD)
             file.writelines(NamedEntityRecognition.__list_generator(entities))
             file.writelines(TEMPLATE_END)
@@ -39,6 +39,8 @@ class NamedEntityRecognition(ABC):
         for entity, articles in entities.items():
             yield "<dt>{}</dt><dd><ul>".format(entity)
             for article in articles:
-                yield '<li><a href="{}">{}</a></li>'
+                yield '<li><a href="{}">{}</a></li>'.format(
+                    article.get_url(), article.title
+                )
             yield "</ul></dd>"
         yield "</dl>"
