@@ -8,6 +8,9 @@ from data import Article
 
 
 class Spacy(NamedEntityRecognition):
+    def __init__(self, num_worker: int):
+        self.num_worker = num_worker
+
     def extract(self, articles: Sequence[Article]) -> Mapping[str, Sequence[Article]]:
         nlp = spacy.load("en_core_web_sm")
 
@@ -15,7 +18,7 @@ class Spacy(NamedEntityRecognition):
             frozenset(Spacy.__get_persons(article))
             for article in nlp.pipe(
                 (str(article.content) for article in articles),
-                n_threads=8,
+                n_threads=self.num_worker,
                 batch_size=32,
             )
         ]
