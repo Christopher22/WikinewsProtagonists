@@ -1,8 +1,20 @@
-import requests
 import re
 
+import requests
+
+
 class ArticleContent:
+    """
+    The content of an article on WikiNews.
+    """
+
     def __init__(self, content: str, optimize: bool):
+        """
+        Create a content of an article from a string.
+        :param content: The content.
+        :param optimize: True, to optimize the content direcly after loading.
+        """
+
         self.content = content
         if optimize:
             self.optimize()
@@ -10,7 +22,11 @@ class ArticleContent:
     def __str__(self):
         return self.content
 
-    def optimize(self):
+    def optimize(self) -> None:
+        """
+        Prepare the content of an article of NLP.
+        """
+
         # Remove the first line with the date
         self.content = self.content[self.content.find("\n") :]
 
@@ -29,11 +45,18 @@ class ArticleContent:
         if additional_data_match is not None:
             self.content = self.content[: additional_data_match.start()]
 
-        # Remove unecessary whitespace at the beginning
+        # Remove unnecessary whitespace at the beginning
         self.content = self.content.strip()
 
     @staticmethod
     def from_id(article_id: int) -> "ArticleContent":
+        """
+        Load the content of an article from WikiNews.
+        :param article_id: The ID of the article.
+        :return: The object with the content of the article.
+        """
+
+        # Query the content and parse the result as JSON
         response = requests.get(
             "https://en.wikinews.org/w/api.php",
             params={
@@ -47,4 +70,6 @@ class ArticleContent:
             },
         ).json()
 
-        return ArticleContent(response["query"]["pages"][str(article_id)]["extract"], optimize=False)
+        return ArticleContent(
+            response["query"]["pages"][str(article_id)]["extract"], optimize=False
+        )
