@@ -32,6 +32,7 @@ Stanford CoreNLP is a Java-based natural language processing toolkit provided by
 
 #### 2.3 Differences in Performance
 Different approaches to NER yield different results. The most current model used in spaCy, a multi-task convoluted neural networktrained on OntoNotes, a large text corpus containing instances of different text genres (e.g. news, telephone conversations, weblogs). For more information on OntoNotes, see https://catalog.ldc.upenn.edu/LDC2013T19. SpaCy provides evaluation of this model's NER accuracy, claiming the following values[2].
+
 |   |spaCy NER|
 |:-:|:-:|
 |F-Score|85.88|
@@ -39,6 +40,7 @@ Different approaches to NER yield different results. The most current model used
 |Recall|86.13|
 The NER parser used in Stanford CoreNLP comes with 3 different models to chose from; one with three classes (Location, Person, Organization), one with 4 classes (Location, Person, Organization, Misc), and one with 7 classes (Location, Person, Organization, Money, Percent, Date, Time). The first model is trained on the MUC 6 and MUC 7 training data sets and additional data, the second one is trained on the CoNLL 2003 corpus, and the last one is trained on the MUC 6 and MUC 7 training data sets without additional data. Unfortunately, these models do not come with explicit evaluation regarding their performance.
 Fortunately, a comparison of performance on the same NER task between spaCy and CoreNLP can be found on a blog about data science [see 3]. While a blog on data science is not the most credible source and the sample set size is miniscule, its methodology (which is provided in detail) is sound enough to use the resulting values[3] as an indication. Moreover, the lack of peer-reviewed work discussing this matter (instead of the overall performance differences between spaCy and CoreNLP, for which there is plenty of work to reference) forced our hand to resort to this source instead.
+
 |Recognized Entity|F-Score for spaCy|F-Score for Stanford NER|
 |:-:|:-:|:-:|
 |College Name|100.0%|100.0%|
