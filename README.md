@@ -38,6 +38,7 @@ Different approaches to NER yield different results. The most current model used
 |F-Score|85.88|
 |Precision|85.62|
 |Recall|86.13|
+
 The NER parser used in Stanford CoreNLP comes with 3 different models to chose from; one with three classes (Location, Person, Organization), one with 4 classes (Location, Person, Organization, Misc), and one with 7 classes (Location, Person, Organization, Money, Percent, Date, Time). The first model is trained on the MUC 6 and MUC 7 training data sets and additional data, the second one is trained on the CoNLL 2003 corpus, and the last one is trained on the MUC 6 and MUC 7 training data sets without additional data. Unfortunately, these models do not come with explicit evaluation regarding their performance.
 Fortunately, a comparison of performance on the same NER task between spaCy and CoreNLP can be found on a blog about data science [see 3]. While a blog on data science is not the most credible source and the sample set size is miniscule, its methodology (which is provided in detail) is sound enough to use the resulting values[3] as an indication. Moreover, the lack of peer-reviewed work discussing this matter (instead of the overall performance differences between spaCy and CoreNLP, for which there is plenty of work to reference) forced our hand to resort to this source instead.
 
@@ -50,6 +51,7 @@ Fortunately, a comparison of performance on the same NER task between spaCy and 
 |Name|99.81%|100.0%|
 |Skills|100.0%|96.36%|
 |**Mean**|**99.64%**|**98.85%**|
+
 It is important to keep in mind that these values are not indicative of which parser will perform better in the task we work on in this project. After all, the sample set consists only of 20 resumes and the task was to extract all kinds of named entities, not just persons, as is the case in our project. It is therefore an interesting question if the performance of the two parsers reflects the tendencies indicated in the values depicted above, namely a slightly better performance from Stanford NER compared to spaCy. This evaluation would have exceeded the scope of this project, unfortunately, and therefore remains as a question to be answered at a later time with the help of the tools provided in this project.
 
 # References
